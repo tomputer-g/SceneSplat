@@ -357,7 +357,7 @@ class ZeroShotSemSegTester(TesterBase):
                     pred_mask = feature_counts > 0
                     # points appear multiple times together in fragments
                     point_features[pred_mask] /= feature_counts[pred_mask].unsqueeze(1)
-                    if "origin_segment" in data_dict and "inverse" in data_dict:
+                    if "origin_coord" in data_dict and "inverse" in data_dict:
                         point_features_cpu = point_features.cpu()
                         point_features_cpu = F.normalize(point_features_cpu, p=2, dim=1)
                         final_features = point_features_cpu[data_dict["inverse"]]

@@ -146,16 +146,17 @@ class DefaultDataset(Dataset):
             result_dict["pc_coord"] = data_dict["pc_coord"]
         if "pc_segment" in data_dict:
             result_dict["pc_segment"] = data_dict["pc_segment"]
-        if "origin_coord" in data_dict:
-            result_dict["origin_coord"] = data_dict.pop("origin_coord")
+
         if "origin_feat_mask" in data_dict:
             result_dict["origin_feat_mask"] = data_dict.pop("origin_feat_mask")
         if "origin_instance" in data_dict:
             result_dict["origin_instance"] = data_dict.pop("origin_instance")
-        if "origin_segment" in data_dict:
-            assert "inverse" in data_dict
-            result_dict["origin_segment"] = data_dict.pop("origin_segment")
+        if "origin_coord" in data_dict:
+            assert "inverse" in data_dict, "return_inverse=True is required for test trasnform"
+            result_dict["origin_coord"] = data_dict.pop("origin_coord")
             result_dict["inverse"] = data_dict.pop("inverse")
+            if "origin_segment" in data_dict:
+                result_dict["origin_segment"] = data_dict.pop("origin_segment")
 
         data_dict_list = []
         for aug in self.aug_transform:

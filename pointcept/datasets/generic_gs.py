@@ -12,10 +12,12 @@ class GenericGSDataset(DefaultDataset):
     VALID_ASSETS = [
         "coord",
         "color",
+        "normal",
         "segment",
         "quat",
         "scale",
         "opacity",
+        "instance",
     ]
     EVAL_PC_ASSETS = ["pc_coord", "pc_segment", "pc_instance"]
 
@@ -65,6 +67,9 @@ class GenericGSDataset(DefaultDataset):
         if "color" in data_dict.keys():
             data_dict["color"] = data_dict["color"].astype(np.float32)
 
+        if "normal" in data_dict.keys():
+            data_dict["normal"] = data_dict["normal"].astype(np.float32)
+
         if "opacity" in data_dict.keys():
             data_dict["opacity"] = data_dict["opacity"].astype(np.float32).clip(0.001)
             data_dict["opacity"] = data_dict["opacity"].reshape(-1, 1)
@@ -80,6 +85,11 @@ class GenericGSDataset(DefaultDataset):
         if "segment" in data_dict.keys():
             data_dict["segment"] = (
                 data_dict.pop("segment").reshape([-1]).astype(np.int32)
+            )
+        
+        if "instance" in data_dict.keys():
+            data_dict["instance"] = (
+                data_dict.pop("instance").reshape([-1]).astype(np.int32)
             )
 
         return data_dict
